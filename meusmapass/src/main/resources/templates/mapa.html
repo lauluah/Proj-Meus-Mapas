@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+            margin-top: 15px;
+        }
+        .box {
+            max-width: 400px;
+        }
+    </style>
+</head>
+
+<button onclick="voltar()">← Voltar para mapas</button>
+<body>
+
+<h2>Adicionar ponto ao mapa</h2>
+
+<input type="text" id="nomePonto" placeholder="Nome do ponto">
+<textarea id="descricaoPonto" placeholder="Descrição"></textarea>
+
+<button onclick="salvarPonto()">Salvar ponto</button>
+<button onclick="voltar()">Voltar</button>
+
+<p id="mensagem"></p>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="../static/js/mapa.js"></script>
+
+</body>
+</html>
+
+
+<script src="https://unpick.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../static/js/mapa.js"></script>
+</body>
+</html>

@@ -13,6 +13,7 @@ public class Ponto {
     private Long id;
 
     private String nome;
+    private String descricao;
     private Double latitude;
     private Double longitude;
 
