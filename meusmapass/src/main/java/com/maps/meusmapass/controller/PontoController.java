@@ -2,7 +2,6 @@ package com.maps.meusmapass.controller;
 
 import com.maps.meusmapass.dto.request.PontoRequestDTO;
 import com.maps.meusmapass.dto.response.PontoResponseDTO;
-import com.maps.meusmapass.model.Ponto;
 import com.maps.meusmapass.service.PontoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mapas/{mapaId}/pontos")
-@CrossOrigin
 public class PontoController {
 
     private final PontoService pontoService;
@@ -20,10 +18,6 @@ public class PontoController {
         this.pontoService = pontoService;
     }
 
-    @GetMapping
-    public List<PontoResponseDTO> listar(@PathVariable Long mapaId) {
-        return pontoService.listarPontosPorMapa(mapaId);
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -33,5 +27,27 @@ public class PontoController {
     ) {
         return pontoService.criarPonto(mapaId, dto);
     }
+
+    @GetMapping
+    public List<PontoResponseDTO> listar(@PathVariable Long mapaId) {
+        return pontoService.listarPontosPorMapa(mapaId);
+    }
+
+    @PutMapping("/{id}")
+    public PontoResponseDTO atualizarPonto(
+            @PathVariable Long mapaId,
+            @PathVariable Long id,
+            @Valid @RequestBody PontoRequestDTO dto
+    ) {
+        return pontoService.atualizarPonto(mapaId, id, dto);
+    }
+
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluir(@PathVariable Long id) {
+        pontoService.excluirPonto(id);
+    }
+
 }
 
