@@ -10,6 +10,8 @@ import com.maps.meusmapass.model.Ponto;
 import com.maps.meusmapass.repository.MapaRepository;
 import com.maps.meusmapass.repository.PontoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -24,7 +26,6 @@ public class PontoService {
     }
 
     public List<PontoResponseDTO> listarPontosPorMapa(Long mapaId) {
-
         if (!mapaRepository.existsById(mapaId)) {
             throw new MapNotFoundException(mapaId);
         }
@@ -35,41 +36,39 @@ public class PontoService {
                 .toList();
     }
 
+    @Transactional
     public PontoResponseDTO criarPonto(Long mapaId, PontoRequestDTO dto) {
-
         Mapa mapa = mapaRepository.findById(mapaId)
                 .orElseThrow(() -> new MapNotFoundException(mapaId));
 
-        Ponto pontoEntity = PontoDTOMapper.toEntity(dto);
-        pontoEntity.setMapa(mapa);
-        Ponto createdPonto = pontoRepository.save(pontoEntity);
-        return PontoDTOMapper.toResponse(createdPonto);
+        Ponto ponto = PontoDTOMapper.toEntity(dto);
+        ponto.setMapa(mapa);
+
+        Ponto salvo = pontoRepository.save(ponto);
+        return PontoDTOMapper.toResponse(salvo);
     }
 
-
-    public PontoResponseDTO editarNomePonto(Long pontoId, String novoNome, String novaDescricao) {
-
-        Ponto ponto = pontoRepository.findById(pontoId)
+    @Transactional
+    public PontoResponseDTO atualizarPonto(
+            Long mapaId,
+            Long pontoId,
+            PontoRequestDTO dto
+    ) {
+        Ponto ponto = pontoRepository
+                .findByIdAndMapaId(pontoId, mapaId)
                 .orElseThrow(() -> new PontoNotFoundException(pontoId));
 
-        ponto.setNome(novoNome);
-        ponto.setDescricao(novaDescricao);
-        pontoRepository.save(ponto);
+        ponto.setNome(dto.getNome());
+        ponto.setDescricao(dto.getDescricao());
 
         return PontoDTOMapper.toResponse(ponto);
     }
 
+    @Transactional
     public void excluirPonto(Long pontoId) {
-        if (!pontoRepository.existsById(pontoId)) {
-            throw new PontoNotFoundException(pontoId);
-        }
-        pontoRepository.deleteById(pontoId);
-    }
+        Ponto ponto = pontoRepository.findById(pontoId)
+                .orElseThrow(() -> new PontoNotFoundException(pontoId));
 
-    public void excluirPontosDoMapa(Long mapaId) {
-        if (!mapaRepository.existsById(mapaId)) {
-            throw new MapNotFoundException(mapaId);
-        }
-        pontoRepository.deleteByMapaId(mapaId);
+        pontoRepository.delete(ponto);
     }
 }
