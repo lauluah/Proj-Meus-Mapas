@@ -6,6 +6,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "ponto")
 public class Ponto {
 
     @Id
@@ -18,7 +19,7 @@ public class Ponto {
     private Double longitude;
 
     @ManyToOne
-    @JoinColumn(name = "mapa_id")
+    @JoinColumn(name = "mapa_id", nullable = false)
     private Mapa mapa;
 
     public Ponto() {
