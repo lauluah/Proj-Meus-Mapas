@@ -1,6 +1,7 @@
 package com.maps.meusmapass.controller;
 
 import com.maps.meusmapass.dto.request.PontoRequestDTO;
+import com.maps.meusmapass.dto.request.PontoUpdateDTO;
 import com.maps.meusmapass.dto.response.PontoResponseDTO;
 import com.maps.meusmapass.service.PontoService;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class PontoController {
     public PontoResponseDTO atualizarPonto(
             @PathVariable Long mapaId,
             @PathVariable Long id,
-            @Valid @RequestBody PontoRequestDTO dto
+            @Valid @RequestBody PontoUpdateDTO dto
     ) {
         return pontoService.atualizarPonto(mapaId, id, dto);
     }
