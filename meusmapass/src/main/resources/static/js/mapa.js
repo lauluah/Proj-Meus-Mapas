@@ -242,9 +242,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-        fetch(`http://localhost:8080/mapas/${mapaId}/pontos/${id}?novoNome=${encodeURIComponent(novoNome)}&novaDescricao=${encodeURIComponent(novaDescricao)}`, {
-            method: "PUT"
+        fetch(`http://localhost:8080/mapas/${mapaId}/pontos/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome: novoNome,
+                descricao: novaDescricao
+            })
         })
+
         .then(async res => {
             if (!res.ok) {
                 const erro = await res.text();
