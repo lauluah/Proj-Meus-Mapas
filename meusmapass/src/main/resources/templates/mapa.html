@@ -2,50 +2,185 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Mapa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Mapa</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-          crossorigin=""/>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
-    <style>
-        #map {
-            height: 400px;
-            margin-top: 15px;
-        }
-        .box {
-            max-width: 400px;
-        }
-    </style>
+    <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+    />
+    <link rel="stylesheet" href="../static/css/styleMapa.css">
 </head>
-
-<button onclick="voltar()">← Voltar para mapas</button>
 <body>
 
-<h2>Adicionar ponto ao mapa</h2>
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" class="back-link">← Voltar</a>
+        <h1 class="map-title">Editor de Mapa</h1>
+    </div>
+</header>
 
-<input type="text" id="nomePonto" placeholder="Nome do ponto">
-<textarea id="descricaoPonto" placeholder="Descrição"></textarea>
+<div class="main-container">
+    <div class="map-container">
+        <div id="map"></div>
 
-<button onclick="salvarPonto()">Salvar ponto</button>
-<button onclick="voltar()">Voltar</button>
+        <div class="instructions" id="instructions">
+            <button class="instructions-close" onclick="window.fecharInstrucoes()">×</button>
+            <h3>Como usar</h3>
+            <p>
+                Clique no mapa para adicionar um ponto, preencha o nome
+                e clique em <strong>Salvar ponto</strong>.
+            </p>
+        </div>
+    </div>
 
-<p id="mensagem"></p>
+    <aside class="sidebar">
+        <div class="sidebar-header" onclick="window.toggleSidebar()">
+            <h2 class="sidebar-title">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Adicionar Ponto
+            </h2>
+            <p class="sidebar-subtitle">Clique no mapa para selecionar a localização</p>
+        </div>
 
-<div id="map"></div>
+        <div class="form-section" id="formSection">
+            <div id="mensagem"></div>
+            <div class="form-group">
+                <label class="form-label" for="pontoNome">Nome do ponto</label>
+                <input type="text" id="pontoNome" class="form-input" placeholder="Ex: Ponto A">
+            </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            <div class="form-group">
+                <label class="form-label" for="pontoDescricao">Descrição (opcional)</label>
+                <textarea id="pontoDescricao" class="form-input form-textarea"
+                          placeholder="Adicione uma descrição..."></textarea>
+            </div>
 
+            <div class="form-group">
+                <label class="form-label">Coordenadas</label>
+                <div class="form-row">
+                    <input type="text" id="pontoLat" class="form-input form-input-small" placeholder="Latitude"
+                           readonly>
+                    <input type="text" id="pontoLng" class="form-input form-input-small" placeholder="Longitude"
+                           readonly>
+                </div>
+            </div>
+
+            <div class="points-section">
+                <div class="points-header">
+                    <span class="points-title">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <line x1="8" x2="21" y1="6" y2="6"></line>
+                            <line x1="8" x2="21" y1="12" y2="12"></line>
+                            <line x1="8" x2="21" y1="18" y2="18"></line>
+                            <line x1="3" x2="3.01" y1="6" y2="6"></line>
+                            <line x1="3" x2="3.01" y1="12" y2="12"></line>
+                            <line x1="3" x2="3.01" y1="18" y2="18"></line>
+                        </svg>
+                        Pontos salvos
+                    </span>
+                    <span class="points-count" id="pontosCount">0</span>
+                </div>
+
+                <div class="points-list" id="pontosLista"></div>
+
+                <div class="empty-state" id="emptyState">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <p>Nenhum ponto adicionado ainda.<br>Clique no mapa para começar.</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="window.cancelarPonto()">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarPonto()">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 6 9 17l-5-5"></path>
+                    </svg>
+                    Salvar ponto
+                </button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">Editar Ponto</h3>
+            <button class="modal-close" onclick="fecharModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="editPontoId">
+            <div class="form-group">
+                <label class="form-label" for="editNome">Nome do ponto</label>
+                <input type="text" id="editNome" class="form-input" placeholder="Nome do ponto">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="editDescricao">Descrição</label>
+                <textarea id="editDescricao" class="form-input form-textarea" placeholder="Descrição do ponto"></textarea>
+            </div>
+            <div id="modalMensagem"></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="fecharModal()">Cancelar</button>
+            <button class="btn btn-primary" onclick="salvarEdicao()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+                Salvar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="deleteModalOverlay">
+    <div class="modal modal-delete">
+        <div class="modal-header">
+            <h3 class="modal-title">Excluir Ponto</h3>
+            <button class="modal-close" onclick="fecharDeleteModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="deletePontoId">
+            <p class="delete-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                    <line x1="12" x2="12" y1="9" y2="13"></line>
+                    <line x1="12" x2="12.01" y1="17" y2="17"></line>
+                </svg>
+                Tem certeza que deseja excluir o ponto "<span id="deletePontoNome"></span>"?
+            </p>
+            <p class="delete-info">Esta ação não pode ser desfeita.</p>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="fecharDeleteModal()">Cancelar</button>
+            <button class="btn btn-danger" onclick="confirmarExclusao()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                </svg>
+                Excluir
+            </button>
+        </div>
+    </div>
+</div>
+<script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+></script>
 <script src="../static/js/mapa.js"></script>
 
-</body>
-</html>
-
-
-<script src="https://unpick.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="../static/js/mapa.js"></script>
 </body>
 </html>

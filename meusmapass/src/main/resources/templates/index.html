@@ -12,6 +12,8 @@
 </head>
 <body>
 
+<div class="toast-container" id="toastContainer"></div>
+
 <div class="container">
     <header class="header">
         <div class="icon-wrapper">
@@ -25,7 +27,7 @@
 
     <div class="form-card">
         <div class="form-group">
-            <input type="text" id="mapName" placeholder="Nome do mapa">
+            <label for="mapName"></label><input type="text" id="mapName" placeholder="Nome do mapa" maxlength="20">
             <button class="btn-gold" onclick="criarMapa()">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -44,18 +46,80 @@
             <span class="count-badge" id="countBadge">0 mapas</span>
         </div>
 
-        <ul class="map-list" id="mapList">
-            <div class="empty-state" id="emptyState">
-                <div class="empty-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </div>
-                <p>Nenhum mapa criado ainda</p>
-                <p>Comece criando seu primeiro mapa acima</p>
+        <ul class="map-list" id="mapList"></ul>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
             </div>
-        </ul>
+            <p>Nenhum mapa criado ainda</p>
+            <p>Comece criando seu primeiro mapa acima</p>
+        </div>
+
+        <div class="modal-overlay" id="deleteMapaModal">
+            <div class="modal modal-delete">
+                <div class="modal-header">
+                    <h3 class="modal-title">Excluir Mapa</h3>
+                    <button class="modal-close" onclick="fecharDeleteMapaModal()">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="deleteMapaId">
+
+                    <div class="delete-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                            <line x1="12" x2="12" y1="9" y2="13"></line>
+                            <line x1="12" x2="12.01" y1="17" y2="17"></line>
+                        </svg>
+                        <p>Tem certeza que deseja excluir o mapa "<span id="deleteMapaNome"></span>"?</p>
+                    </div>
+
+                    <p class="delete-info">
+                        Todos os pontos desse mapa também serão removidos.<br>
+                        <strong>Esta ação não pode ser desfeita.</strong>
+                    </p>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="fecharDeleteMapaModal()">Cancelar</button>
+                    <button class="btn btn-danger" onclick="confirmarExclusaoMapa()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M3 6h18"></path>
+                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        </svg>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="editMapaModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h3 class="modal-title">Editar nome do mapa</h3>
+                    <button class="modal-close" onclick="fecharEditarMapaModal()">×</button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="editMapaId">
+
+                    <div class="form-group">
+                        <label for="editMapaNome"></label><input type="text" id="editMapaNome" placeholder="Novo nome do mapa" maxlength="20">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="fecharEditarMapaModal()">Cancelar</button>
+                    <button class="btn-gold" onclick="confirmarEdicaoMapa()">Salvar</button>
+                </div>
+            </div>
+        </div>
+
     </section>
     <footer class="footer">
         meusMapas.com
