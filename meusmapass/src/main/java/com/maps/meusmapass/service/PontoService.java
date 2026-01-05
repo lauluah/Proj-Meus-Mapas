@@ -2,6 +2,7 @@ package com.maps.meusmapass.service;
 
 import com.maps.meusmapass.dto.mapper.PontoDTOMapper;
 import com.maps.meusmapass.dto.request.PontoRequestDTO;
+import com.maps.meusmapass.dto.request.PontoUpdateDTO;
 import com.maps.meusmapass.dto.response.PontoResponseDTO;
 import com.maps.meusmapass.exceptions.MapNotFoundException;
 import com.maps.meusmapass.exceptions.PontoNotFoundException;
@@ -52,7 +53,7 @@ public class PontoService {
     public PontoResponseDTO atualizarPonto(
             Long mapaId,
             Long pontoId,
-            PontoRequestDTO dto
+            PontoUpdateDTO dto
     ) {
         Ponto ponto = pontoRepository
                 .findByIdAndMapaId(pontoId, mapaId)
