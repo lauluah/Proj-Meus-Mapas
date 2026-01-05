@@ -2,7 +2,6 @@ package com.maps.meusmapass.dto.mapper;
 
 import com.maps.meusmapass.dto.request.PontoRequestDTO;
 import com.maps.meusmapass.dto.response.PontoResponseDTO;
-import com.maps.meusmapass.model.Mapa;
 import com.maps.meusmapass.model.Ponto;
 
 public class PontoDTOMapper {
