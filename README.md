@@ -6,7 +6,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
 ![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=for-the-badge&logo=leaflet&logoColor=white)
 
-**Sistema interativo para criar e gerenciar mapas personalizados com pontos de interesse.**
+**Sistema interativo para criar e gerenciar mapas com pontos de interesse.**
 
 [Funcionalidades](#-funcionalidades) •
 [Tecnologias](#-tecnologias) •
@@ -19,7 +19,7 @@
 
 ## ✨ Funcionalidades
 
-- 🗺️ **Criar mapas personalizados** com nomes únicos
+- 🗺️ **Criar mapas** e **criar pontos**
 - 📍 **Adicionar pontos** clicando diretamente no mapa
 - ✏️ **Editar e excluir** pontos e mapas existentes
 - 🔍 **Visualizar coordenadas** (latitude/longitude) automaticamente
