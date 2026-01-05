@@ -68,5 +68,15 @@ cd meusmapass
 # Execute o backend
 ./mvnw spring-boot:run
 
-# Acesse no navegador
-http://localhost:8080
+Frontend
+
+Após rodar o backend, abra o arquivo index.html e clique em um dos ícones dos navegadores à direita para abrir o frontend diretamente no navegador.
+
+O frontend é servido pelo **servidor HTTP do IntelliJ**, acessível em:
+
+http://localhost:63342/meusmapass/templates/index.html
+
+⚠️ Importante:
+- A porta **63342** é utilizada pelo frontend.
+- A porta **8080** é utilizada apenas pelo backend (Spring Boot).
+- O backend deve estar em execução antes de acessar o frontend, para que as requisições funcionem corretamente.
