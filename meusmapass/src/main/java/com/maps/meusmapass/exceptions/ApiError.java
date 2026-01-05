@@ -6,16 +6,16 @@ import java.time.LocalDateTime;
 
 @Setter
 @Getter
-public class Error {
+public class ApiError {
     private String mensagem;
     private String codigoErro;
     private LocalDateTime dataHora;
 
-    public Error() {
+    public ApiError() {
         this.dataHora = LocalDateTime.now();
     }
 
-    public Error(String mensagem, String codigoErro) {
+    public ApiError(String mensagem, String codigoErro) {
         this.mensagem = mensagem;
         this.codigoErro = codigoErro;
     }
